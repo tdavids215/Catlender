@@ -11,7 +11,7 @@ function displaySavedTexts() {
   savedTexts
     .filter((savedText) => savedText.date === selectedDate)
     .forEach((savedText) => {
-      var savedDiv = document.createElement("div");
+      var savedDiv = document.createElement("blockquote");
       savedDiv.textContent = savedText.text;
       textLocation.appendChild(savedDiv);
     });
@@ -39,7 +39,7 @@ function handleSubmission() {
   var enteredText = textEntry.value;
   saveTextToLocalStorage(enteredText);
 
-  var newDiv = document.createElement("div");
+  var newDiv = document.createElement("blockquote");
   newDiv.textContent = enteredText;
   textLocation.appendChild(newDiv);
 
