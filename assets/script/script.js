@@ -6,6 +6,7 @@ var textLocation = document.querySelector("#text-location");
 var selectedDate = null;
 var catPics = "https://api.thecatapi.com/v1/images/search";
 
+
 // Function to display saved texts based on selected date
 function displaySavedTexts() {
   textLocation.innerHTML = ""; // Clear existing displayed texts
@@ -24,7 +25,7 @@ function displaySavedTexts() {
       deleteButton.role = "button";
       deleteButton.textContent = "Delete";
       deleteButton.className = "outline";
-      deleteButton.addEventListener("click", () => handleDelete(index));
+      deleteButton.addEventListener("click", () => handleDelete(savedText.index));
 
       // Append the delete button to the saved text element
       savedDiv.appendChild(deleteButton);
@@ -42,7 +43,8 @@ function getSavedTexts() {
 // Function to save text to local storage
 function saveTextToLocalStorage(enteredText) {
   var savedTexts = getSavedTexts();
-  savedTexts.push({ date: selectedDate, text: enteredText });
+  var newIndex = savedTexts.length; // New index will be the current length of the array
+  savedTexts.push({ index: newIndex, date: selectedDate, text: enteredText }); // Save the index
   localStorage.setItem("enteredTexts", JSON.stringify(savedTexts));
 }
 
