@@ -4,6 +4,7 @@ var submitButton = document.querySelector("#submitButton");
 var dateInput = document.querySelector("input[type='date']");
 var textLocation = document.querySelector("#text-location");
 var selectedDate = null;
+var catPics = "https://api.thecatapi.com/v1/images/search";
 
 
 // Function to display saved texts based on selected date
