@@ -103,3 +103,19 @@ submitButton.addEventListener("click", handleSubmission);
 
 // Initial display of saved texts
 displaySavedTexts();
+
+//Fetching Cat Pictures from API
+
+fetch(catPics)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    var imageUrl = data[0].url; 
+    var imgElement = document.createElement("img");
+    imgElement.src = imageUrl;
+    document.getElementById("cat-container").appendChild(imgElement);
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
