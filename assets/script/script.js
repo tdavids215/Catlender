@@ -121,3 +121,12 @@ fetch(catPics)
   .catch(function(error) {
     console.log(error);
   });
+
+  var catFact = 'https://meowfacts.p.rapidapi.com/?lang=eng';
+const options = {
+  method: 'GET',
+  headers: {
+    'X-RapidAPI-Key': '506837473emsh8453bfa9de13dbfp12a602jsn86e302e8082d',
+    'X-RapidAPI-Host': 'meowfacts.p.rapidapi.com'
+  }
+};
