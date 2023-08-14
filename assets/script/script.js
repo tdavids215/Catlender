@@ -135,3 +135,27 @@ fetch(catPics)
   .catch(function(error) {
     console.log(error);
   });
+
+//Added Cat Fact API
+  var catFact = 'https://meowfacts.p.rapidapi.com/?lang=eng';
+const options = {
+  method: 'GET',
+  headers: {
+    'X-RapidAPI-Key': '506837473emsh8453bfa9de13dbfp12a602jsn86e302e8082d',
+    'X-RapidAPI-Host': 'meowfacts.p.rapidapi.com'
+  }
+};
+//Fetching Cat Fact API and appending it to the 'Cat Container' with a 'P' Element
+fetch(catFact, options)
+  .then(function(response) {
+    return response.text();
+  })
+  .then(function(result) {
+    var factElement = document.createElement("p");
+    factElement.textContent = result;
+    document.getElementById("cat-container").appendChild(factElement);
+  })
+  .catch(function(error) {
+    console.error(error);
+  });
+
