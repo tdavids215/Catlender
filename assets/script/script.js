@@ -14,7 +14,7 @@ function displaySavedTexts() {
   savedTexts
     .filter((savedText) => savedText.date === selectedDate)
     .forEach((savedText, index) => {
-      
+
       // Create a new blockquote element to display saved text
       var savedDiv = document.createElement("blockquote");
       savedDiv.textContent = savedText.text;
@@ -25,7 +25,7 @@ function displaySavedTexts() {
       deleteButton.role = "button";
       deleteButton.textContent = "Delete";
       deleteButton.className = "outline";
-      deleteButton.addEventListener("click", () => handleDelete(savedText.index));
+      deleteButton.addEventListener("click", () => handleDelete(index));
 
       // Append the delete button to the saved text element
       savedDiv.appendChild(deleteButton);
@@ -35,6 +35,7 @@ function displaySavedTexts() {
     });
 }
 
+
 // Function to get saved texts from local storage
 function getSavedTexts() {
   return JSON.parse(localStorage.getItem("enteredTexts")) || [];
@@ -43,8 +44,7 @@ function getSavedTexts() {
 // Function to save text to local storage
 function saveTextToLocalStorage(enteredText) {
   var savedTexts = getSavedTexts();
-  var newIndex = savedTexts.length; // New index will be the current length of the array
-  savedTexts.push({ index: newIndex, date: selectedDate, text: enteredText }); // Save the index
+  savedTexts.push({ date: selectedDate, text: enteredText });
   localStorage.setItem("enteredTexts", JSON.stringify(savedTexts));
 }
 
@@ -68,7 +68,7 @@ function handleSubmission() {
   deleteButton.role = "button";
   deleteButton.textContent = "Delete";
   deleteButton.className = "outline";
-  deleteButton.addEventListener("click", () => handleDelete(savedTexts.length - 1));
+  deleteButton.addEventListener("click", () => handleDelete(getSavedTexts().length - 1));
 
   // Append the delete button to the newly added text element
   newDiv.appendChild(deleteButton);
@@ -84,6 +84,21 @@ function handleDateSelection() {
   selectedDate = dateInput.value;
   displaySavedTexts();
 }
+
+// Function to set default date to today
+function setDefaultDate() {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = yyyy + '-' + mm + '-' + dd;
+  dateInput.value = today; // Set the default date input to today's date
+  handleDateSelection(); // Call the date selection handler
+}
+
+// Call setDefaultDate when the page is loaded
+setDefaultDate();
 
 // Function to handle deletion of a saved text
 function handleDelete(index) {
@@ -107,13 +122,12 @@ submitButton.addEventListener("click", handleSubmission);
 displaySavedTexts();
 
 //Fetching Cat Pictures from API
-
 fetch(catPics)
   .then(function(response) {
     return response.json();
   })
   .then(function(data) {
-    var imageUrl = data[0].url; 
+    var imageUrl = data[0].url;
     var imgElement = document.createElement("img");
     imgElement.src = imageUrl;
     document.getElementById("cat-container").appendChild(imgElement);
@@ -121,6 +135,7 @@ fetch(catPics)
   .catch(function(error) {
     console.log(error);
   });
+
 //Added Cat Fact API
   var catFact = 'https://meowfacts.p.rapidapi.com/?lang=eng';
 const options = {
@@ -143,3 +158,4 @@ fetch(catFact, options)
   .catch(function(error) {
     console.error(error);
   });
+
