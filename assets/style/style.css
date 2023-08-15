@@ -18,3 +18,17 @@
   position: absolute;
   bottom: 0;
 }
+
+.cat-fact {
+  font-family: cursive;
+  border: 5px solid black;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
