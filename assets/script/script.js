@@ -34,7 +34,7 @@ function displaySavedTexts() {
       // Create a new article element with p element as child to display saved text
       var savedDiv = document.createElement("article");
       savedDiv.id = `task-${savedText.id}`; // Add unique ID for reference during editing
-      
+
       var textEl = document.createElement("p");
       textEl.textContent = savedText.text;
       savedDiv.appendChild(textEl);
@@ -63,7 +63,7 @@ function getSavedTexts() {
 function saveTextToLocalStorage(enteredText) {
   var savedTexts = getSavedTexts();
   var taskId = new Date().getTime(); // Using timestamp as unique identifier
-  savedTexts.push({ id: taskId, date: selectedDate, text: enteredText, completed: false});
+  savedTexts.push({ id: taskId, date: selectedDate, text: enteredText, completed: false });
   localStorage.setItem("enteredTexts", JSON.stringify(savedTexts));
 }
 
@@ -135,7 +135,7 @@ function handleEdit(taskId) {
 // Function to create checkbox for marking completion
 function createCompletionCheckbox(savedText) {
   var fieldset = document.createElement("fieldset");
-  
+
   var label = document.createElement("label");
   label.setAttribute("for", `completed-${savedText.id}`);
 
@@ -222,3 +222,64 @@ fetch(catFact, options)
   .catch(function (error) {
     console.error(error);
   });
+
+// theme switcher
+function themeSwitcherFunction() {
+  const themeSwitcher = {
+    // Config
+    _scheme: "light",
+    checkboxTarget: "#theme-switch",
+    rootAttribute: "data-theme",
+    localStorageKey: "picoPreferredColorScheme",
+    // Init
+    init() {
+      this.scheme = this.schemeFromLocalStorage;
+      this.initSwitcher();
+    },
+    // Get color scheme from local storage
+    get schemeFromLocalStorage() {
+      if (typeof window.localStorage !== "undefined") {
+        if (window.localStorage.getItem(this.localStorageKey) !== null) {
+          return window.localStorage.getItem(this.localStorageKey);
+        }
+      }
+      return this._scheme;
+    },
+    // Init switcher
+    initSwitcher() {
+      const checkbox = document.querySelector(this.checkboxTarget);
+      if (this._scheme === "dark") {
+        checkbox.checked = true;
+      }
+      checkbox.addEventListener("change", () => {
+        this.scheme = checkbox.checked ? "dark" : "light";
+      });
+    },
+    // Set scheme
+    set scheme(scheme) {
+      if (scheme === "dark" || scheme === "light") {
+        this._scheme = scheme;
+      }
+      this.applyScheme();
+      this.schemeToLocalStorage();
+    },
+    // Get scheme
+    get scheme() {
+      return this._scheme;
+    },
+    // Apply scheme
+    applyScheme() {
+      document.querySelector("html").setAttribute(this.rootAttribute, this.scheme);
+    },
+    // Store scheme to local storage
+    schemeToLocalStorage() {
+      if (typeof window.localStorage !== "undefined") {
+        window.localStorage.setItem(this.localStorageKey, this.scheme);
+      }
+    },
+  };
+  // Init the theme switcher
+  themeSwitcher.init();
+}
+// Invoke the function
+themeSwitcherFunction();
