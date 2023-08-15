@@ -14,8 +14,11 @@ function displaySavedTexts() {
     .filter((savedText) => savedText.date === selectedDate)
     .forEach((savedText) => {
       // Create a new blockquote element to display saved text
-      var savedDiv = document.createElement("blockquote");
-      savedDiv.textContent = savedText.text;
+      var savedDiv = document.createElement("article");
+      var textEl = document.createElement("p");
+      savedDiv.id = "article";
+      savedDiv.appendChild(textEl);
+      textEl.textContent = savedText.text;
 
       // Create a delete button for each saved text
       var deleteButton = document.createElement("a");
