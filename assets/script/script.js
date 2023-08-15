@@ -125,8 +125,8 @@ fetch(catFact, options)
     var displayCatFact = result.data;
     var factElement = document.createElement("p");
     factElement.textContent = displayCatFact;
-    factElement.classList.add("cat-fact");
-    document.getElementById("cat-container").appendChild(factElement);
+    // factElement.classList.add("cat-fact");
+    document.getElementById("cat-fact").appendChild(factElement);
   })
   .catch(function(error) {
     console.error(error);
