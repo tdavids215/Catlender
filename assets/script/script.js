@@ -6,15 +6,13 @@ var textLocation = document.querySelector("#text-location");
 var selectedDate = null;
 var catPics = "https://api.thecatapi.com/v1/images/search";
 
-
 // Function to display saved texts based on selected date
 function displaySavedTexts() {
-  textLocation.innerHTML = ""; // Clear existing displayed texts
+  textLocation.innerHTML = "";
   var savedTexts = getSavedTexts();
   savedTexts
     .filter((savedText) => savedText.date === selectedDate)
-    .forEach((savedText, index) => {
-
+    .forEach((savedText) => {
       // Create a new blockquote element to display saved text
       var savedDiv = document.createElement("blockquote");
       savedDiv.textContent = savedText.text;
@@ -25,7 +23,7 @@ function displaySavedTexts() {
       deleteButton.role = "button";
       deleteButton.textContent = "Delete";
       deleteButton.className = "outline";
-      deleteButton.addEventListener("click", () => handleDelete(index));
+      deleteButton.addEventListener("click", () => handleDelete(savedText.id));
 
       // Append the delete button to the saved text element
       savedDiv.appendChild(deleteButton);
@@ -35,7 +33,6 @@ function displaySavedTexts() {
     });
 }
 
-
 // Function to get saved texts from local storage
 function getSavedTexts() {
   return JSON.parse(localStorage.getItem("enteredTexts")) || [];
@@ -44,7 +41,8 @@ function getSavedTexts() {
 // Function to save text to local storage
 function saveTextToLocalStorage(enteredText) {
   var savedTexts = getSavedTexts();
-  savedTexts.push({ date: selectedDate, text: enteredText });
+  var taskId = new Date().getTime(); // Using timestamp as unique identifier
+  savedTexts.push({ id: taskId, date: selectedDate, text: enteredText });
   localStorage.setItem("enteredTexts", JSON.stringify(savedTexts));
 }
 
@@ -54,28 +52,9 @@ function handleSubmission() {
     alert("Please select a date first.");
     return;
   }
-
   var enteredText = textEntry.value;
   saveTextToLocalStorage(enteredText);
-
-  // Create a new blockquote element for the entered text
-  var newDiv = document.createElement("blockquote");
-  newDiv.textContent = enteredText;
-
-  // Create a delete button for the newly added text
-  var deleteButton = document.createElement("a");
-  deleteButton.href = "#";
-  deleteButton.role = "button";
-  deleteButton.textContent = "Delete";
-  deleteButton.className = "outline";
-  deleteButton.addEventListener("click", () => handleDelete(getSavedTexts().length - 1));
-
-  // Append the delete button to the newly added text element
-  newDiv.appendChild(deleteButton);
-
-  // Append the newly added text element to the text location
-  textLocation.appendChild(newDiv);
-
+  displaySavedTexts(); // Re-display saved texts
   textEntry.value = "";
 }
 
@@ -89,26 +68,17 @@ function handleDateSelection() {
 function setDefaultDate() {
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
   var yyyy = today.getFullYear();
-
-  today = yyyy + '-' + mm + '-' + dd;
-  dateInput.value = today; // Set the default date input to today's date
-  handleDateSelection(); // Call the date selection handler
+  dateInput.value = yyyy + '-' + mm + '-' + dd;
+  handleDateSelection();
 }
 
-// Call setDefaultDate when the page is loaded
-setDefaultDate();
-
 // Function to handle deletion of a saved text
-function handleDelete(index) {
+function handleDelete(taskId) {
   var savedTexts = getSavedTexts();
-  savedTexts.splice(index, 1); // Remove the selected text
-
-  // Update local storage
+  savedTexts = savedTexts.filter((savedText) => savedText.id !== taskId);
   localStorage.setItem("enteredTexts", JSON.stringify(savedTexts));
-
-  // Re-display saved texts
   displaySavedTexts();
 }
 
@@ -118,21 +88,21 @@ dateInput.addEventListener("change", handleDateSelection);
 // Event listener for submit button click
 submitButton.addEventListener("click", handleSubmission);
 
-// Initial display of saved texts
-displaySavedTexts();
+// Call setDefaultDate when the page is loaded
+setDefaultDate();
 
-//Fetching Cat Pictures from API
+// Fetching Cat Pictures from API
 fetch(catPics)
-  .then(function(response) {
+  .then(function (response) {
     return response.json();
   })
-  .then(function(data) {
+  .then(function (data) {
     var imageUrl = data[0].url;
     var imgElement = document.createElement("img");
     imgElement.src = imageUrl;
     document.getElementById("cat-container").appendChild(imgElement);
   })
-  .catch(function(error) {
+  .catch(function (error) {
     console.log(error);
   });
 
