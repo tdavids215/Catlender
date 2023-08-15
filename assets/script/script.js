@@ -6,6 +6,24 @@ var textLocation = document.querySelector("#text-location");
 var selectedDate = null;
 var catPics = "https://api.thecatapi.com/v1/images/search";
 
+// Function to create button elements (Edit, Delete)
+function createButton(type, savedText) {
+  var button = document.createElement("a");
+  button.href = "#";
+  button.role = "button";
+  button.textContent = type;
+  button.className = "outline";
+
+  // Adding appropriate event listeners based on button type
+  if (type === "Edit") {
+    button.addEventListener("click", () => handleEdit(savedText.id));
+  } else if (type === "Delete") {
+    button.addEventListener("click", () => handleDelete(savedText.id));
+  }
+
+  return button;
+}
+
 // Function to display saved texts based on selected date
 function displaySavedTexts() {
   textLocation.innerHTML = "";
@@ -13,22 +31,19 @@ function displaySavedTexts() {
   savedTexts
     .filter((savedText) => savedText.date === selectedDate)
     .forEach((savedText) => {
-      // Create a new article element with p element as child to display saved text (delete button is nested in the article element)
+      // Create a new article element with p element as child to display saved text
       var savedDiv = document.createElement("article");
+      savedDiv.id = `task-${savedText.id}`; // Add unique ID for reference during editing
+      
       var textEl = document.createElement("p");
-      savedDiv.id = "article";
-      savedDiv.appendChild(textEl);
       textEl.textContent = savedText.text;
+      savedDiv.appendChild(textEl);
 
-      // Create a delete button for each saved text
-      var deleteButton = document.createElement("a");
-      deleteButton.href = "#";
-      deleteButton.role = "button";
-      deleteButton.textContent = "Delete";
-      deleteButton.className = "outline";
-      deleteButton.addEventListener("click", () => handleDelete(savedText.id));
+      // Create and append Edit and Delete buttons
+      var editButton = createButton("Edit", savedText);
+      savedDiv.appendChild(editButton);
 
-      // Append the delete button to the saved text element
+      var deleteButton = createButton("Delete", savedText);
       savedDiv.appendChild(deleteButton);
 
       // Append the saved text element to the text location
@@ -70,10 +85,10 @@ function handleDateSelection() {
 // Function to set default date to today
 function setDefaultDate() {
   var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0");
   var yyyy = today.getFullYear();
-  dateInput.value = yyyy + '-' + mm + '-' + dd;
+  dateInput.value = yyyy + "-" + mm + "-" + dd;
   handleDateSelection();
 }
 
@@ -85,6 +100,34 @@ function handleDelete(taskId) {
   displaySavedTexts();
 }
 
+// Function to handle editing of a saved text
+function handleEdit(taskId) {
+  var savedTexts = getSavedTexts();
+  var textToEdit = savedTexts.find((savedText) => savedText.id === taskId);
+  var savedDiv = document.querySelector(`#task-${taskId}`);
+  var textNode = savedDiv.querySelector('p');
+
+  if (textToEdit && savedDiv && textNode) {
+    // Replace the current text with a text input element
+    var editInput = document.createElement("input");
+    editInput.type = "text";
+    editInput.value = textToEdit.text;
+    savedDiv.replaceChild(editInput, textNode);
+
+    // Create a Save button to apply the edits
+    var saveButton = createButton("Save", textToEdit); // Using createButton for Save button
+    saveButton.addEventListener("click", () => {
+      textToEdit.text = editInput.value;
+      localStorage.setItem("enteredTexts", JSON.stringify(savedTexts));
+      displaySavedTexts();
+    });
+
+    // Replace the Edit button with the Save button
+    var editButton = savedDiv.querySelector('a[textContent="Edit"]');
+    editButton = Array.from(savedDiv.querySelectorAll("a")).find((el) => el.textContent === "Edit");
+    savedDiv.replaceChild(saveButton, editButton);
+  }
+}
 // Event listener for date selection change
 dateInput.addEventListener("change", handleDateSelection);
 
@@ -110,13 +153,13 @@ fetch(catPics)
   });
 
 //Added Cat Fact API
-var catFact = 'https://meowfacts.p.rapidapi.com/?lang=eng';
+var catFact = "https://meowfacts.p.rapidapi.com/?lang=eng";
 const options = {
-  method: 'GET',
+  method: "GET",
   headers: {
-    'X-RapidAPI-Key': '506837473emsh8453bfa9de13dbfp12a602jsn86e302e8082d',
-    'X-RapidAPI-Host': 'meowfacts.p.rapidapi.com'
-  }
+    "X-RapidAPI-Key": "506837473emsh8453bfa9de13dbfp12a602jsn86e302e8082d",
+    "X-RapidAPI-Host": "meowfacts.p.rapidapi.com",
+  },
 };
 //Fetching Cat Fact API and appending it to the 'Cat Container' with a 'P' Element
 fetch(catFact, options)
@@ -134,4 +177,3 @@ fetch(catFact, options)
   .catch(function (error) {
     console.error(error);
   });
-
