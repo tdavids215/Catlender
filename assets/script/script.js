@@ -46,6 +46,9 @@ function displaySavedTexts() {
       var deleteButton = createButton("Delete", savedText);
       savedDiv.appendChild(deleteButton);
 
+      var completionFieldset = createCompletionCheckbox(savedText);
+      savedDiv.appendChild(completionFieldset);
+
       // Append the saved text element to the text location
       textLocation.appendChild(savedDiv);
     });
@@ -60,7 +63,7 @@ function getSavedTexts() {
 function saveTextToLocalStorage(enteredText) {
   var savedTexts = getSavedTexts();
   var taskId = new Date().getTime(); // Using timestamp as unique identifier
-  savedTexts.push({ id: taskId, date: selectedDate, text: enteredText });
+  savedTexts.push({ id: taskId, date: selectedDate, text: enteredText, completed: false});
   localStorage.setItem("enteredTexts", JSON.stringify(savedTexts));
 }
 
@@ -128,6 +131,47 @@ function handleEdit(taskId) {
     savedDiv.replaceChild(saveButton, editButton);
   }
 }
+
+// Function to create checkbox for marking completion
+function createCompletionCheckbox(savedText) {
+  var fieldset = document.createElement("fieldset");
+  
+  var label = document.createElement("label");
+  label.setAttribute("for", `completed-${savedText.id}`);
+
+  var checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.id = `completed-${savedText.id}`;
+  checkbox.name = "completed";
+  checkbox.checked = savedText.completed || false;
+  checkbox.addEventListener("change", () => handleCompletionToggle(savedText.id, checkbox.checked));
+
+  label.appendChild(checkbox);
+  label.appendChild(document.createTextNode("Mark as completed"));
+
+  fieldset.appendChild(label);
+
+  return fieldset;
+}
+
+// Function to handle toggling of completion status
+function handleCompletionToggle(taskId, isCompleted) {
+  var savedTexts = getSavedTexts();
+  var textToToggle = savedTexts.find((savedText) => savedText.id === taskId);
+  var savedDiv = document.querySelector(`#task-${taskId}`);
+  var textNode = savedDiv.querySelector('p');
+  var editButton = Array.from(savedDiv.querySelectorAll("a")).find((el) => el.textContent === "Edit");
+
+  if (textToToggle && savedDiv && textNode && editButton) {
+    textToToggle.completed = isCompleted;
+    localStorage.setItem("enteredTexts", JSON.stringify(savedTexts));
+    textNode.style.textDecoration = isCompleted ? "line-through" : "none";
+    editButton.style.pointerEvents = isCompleted ? "none" : "auto"; // Add this line to disable or enable the Edit button
+    editButton.style.opacity = isCompleted ? 0.5 : 1; // Optional: reduce opacity to visually indicate it's disabled
+  }
+}
+
+
 // Event listener for date selection change
 dateInput.addEventListener("change", handleDateSelection);
 
