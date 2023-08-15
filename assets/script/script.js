@@ -6,19 +6,27 @@ var textLocation = document.querySelector("#text-location");
 var selectedDate = null;
 var catPics = "https://api.thecatapi.com/v1/images/search";
 
-// Function to create button elements (Edit, Delete)
+// Function to create button elements
 function createButton(type, savedText) {
-  var button = document.createElement("a");
-  button.href = "#";
-  button.role = "button";
+  var button = document.createElement("button");
   button.textContent = type;
-  button.className = "outline";
 
   // Adding appropriate event listeners based on button type
   if (type === "Edit") {
-    button.addEventListener("click", () => handleEdit(savedText.id));
+    button.addEventListener("click", (event) => {
+      event.preventDefault(); // Prevent any default action
+      handleEdit(savedText.id);
+    });
   } else if (type === "Delete") {
-    button.addEventListener("click", () => handleDelete(savedText.id));
+    button.addEventListener("click", (event) => {
+      event.preventDefault(); // Prevent any default action
+      handleDelete(savedText.id);
+    });
+  } else if (type === "Save") {
+    button.addEventListener("click", (event) => {
+      event.preventDefault(); // Prevent any default action
+      // Any specific logic for saving, if required.
+    });
   }
 
   return button;
@@ -119,15 +127,16 @@ function handleEdit(taskId) {
 
     // Create a Save button to apply the edits
     var saveButton = createButton("Save", textToEdit); // Using createButton for Save button
-    saveButton.addEventListener("click", () => {
+    saveButton.addEventListener("click", (event) => {
+      event.preventDefault(); // Prevent any default action
+      
       textToEdit.text = editInput.value;
       localStorage.setItem("enteredTexts", JSON.stringify(savedTexts));
       displaySavedTexts();
     });
 
     // Replace the Edit button with the Save button
-    var editButton = savedDiv.querySelector('a[textContent="Edit"]');
-    editButton = Array.from(savedDiv.querySelectorAll("a")).find((el) => el.textContent === "Edit");
+    var editButton = Array.from(savedDiv.querySelectorAll("button")).find((el) => el.textContent === "Edit");
     savedDiv.replaceChild(saveButton, editButton);
   }
 }
