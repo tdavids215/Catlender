@@ -133,11 +133,14 @@ const options = {
 //Fetching Cat Fact API and appending it to the 'Cat Container' with a 'P' Element
 fetch(catFact, options)
   .then(function(response) {
-    return response.text();
+    return response.json();
   })
   .then(function(result) {
+    console.log(result);
+    var displayCatFact = result.data;
     var factElement = document.createElement("p");
-    factElement.textContent = result;
+    factElement.textContent = displayCatFact;
+    factElement.classList.add("cat-fact");
     document.getElementById("cat-container").appendChild(factElement);
   })
   .catch(function(error) {
