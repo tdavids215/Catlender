@@ -11,29 +11,39 @@
 
 <body>
     <header class="container">
-        <hgroup>
-            <h1>Catlendar</h1>
-            <h2>brief description here</h2>
-        </hgroup>
+        <div class="grid">
+            <hgroup>
+                <h1>Catlendar</h1>
+                <h2>brief description here</h2>
+            </hgroup>
+            <!-- cat fact and img -->
+
+            <div id="cat-container" class="image-wrapper"></div>
+            <div id="cat-fact"></div>
+
+        </div>
+        <!-- theme switch -->
+        <label for="switch-1">
+            <input type="checkbox" id="theme-switch" name="theme-switch" role="switch" checked />
+            Dark Mode
+        </label>
     </header>
     <div class="container">
         <div class="grid">
             <div id="datepicker">
+                <!-- date selection -->
                 <form action="">
                     <input type="date">
-                    <button type="submit">Select</button>
                 </form>
+                <!-- text input and submit button -->
                 <textarea name="" id="text-entry" cols="30" rows="10"></textarea>
                 <button id="submitButton">Submit</button>
             </div>
             <!-- text input is appended to this div -->
-            <div id="text-location">
+            <div style="height:550px;width:auto;overflow:auto;" id="text-location">
 
             </div>
         </div>
-    </div>
-    <div class="flex-container">
-    <div id="cat-container" class="image-wrapper"></div>
     </div>
     <script type="text/javascript" src="assets/script/script.js"></script>
 </body>

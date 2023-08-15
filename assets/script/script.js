@@ -13,9 +13,12 @@ function displaySavedTexts() {
   savedTexts
     .filter((savedText) => savedText.date === selectedDate)
     .forEach((savedText) => {
-      // Create a new blockquote element to display saved text
-      var savedDiv = document.createElement("blockquote");
-      savedDiv.textContent = savedText.text;
+      // Create a new article element with p element as child to display saved text (delete button is nested in the article element)
+      var savedDiv = document.createElement("article");
+      var textEl = document.createElement("p");
+      savedDiv.id = "article";
+      savedDiv.appendChild(textEl);
+      textEl.textContent = savedText.text;
 
       // Create a delete button for each saved text
       var deleteButton = document.createElement("a");
@@ -107,7 +110,7 @@ fetch(catPics)
   });
 
 //Added Cat Fact API
-  var catFact = 'https://meowfacts.p.rapidapi.com/?lang=eng';
+var catFact = 'https://meowfacts.p.rapidapi.com/?lang=eng';
 const options = {
   method: 'GET',
   headers: {
@@ -117,18 +120,18 @@ const options = {
 };
 //Fetching Cat Fact API and appending it to the 'Cat Container' with a 'P' Element
 fetch(catFact, options)
-  .then(function(response) {
+  .then(function (response) {
     return response.json();
   })
-  .then(function(result) {
+  .then(function (result) {
     console.log(result);
     var displayCatFact = result.data;
     var factElement = document.createElement("p");
     factElement.textContent = displayCatFact;
-    factElement.classList.add("cat-fact");
-    document.getElementById("cat-container").appendChild(factElement);
+    // factElement.classList.add("cat-fact");
+    document.getElementById("cat-fact").appendChild(factElement);
   })
-  .catch(function(error) {
+  .catch(function (error) {
     console.error(error);
   });
 
