@@ -216,12 +216,7 @@ fetch(catFact, options)
     var factElement = document.createElement("p");
     factElement.textContent = displayCatFact;
 
-    // Create a new p element for the text before the fact
-    var textElement = document.createElement("p");
-    textElement.textContent = "Did you know? ";
-
     // Append the text and fact elements to the cat-fact element
-    document.getElementById("cat-fact").appendChild(textElement);
     document.getElementById("cat-fact").appendChild(factElement);
   })
   .catch(function (error) {
