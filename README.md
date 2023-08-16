@@ -6,19 +6,19 @@ _An interactive web-based calendar with a fun twist! Not only can you save tasks
 
 ## Table of Contents
 
-- [Overview](#overview-📖)
-- [Motivation](#cats-and-humor-🐾)
-- [Supporting Researches](#researches-📚)
-- [Features](#features-🌟)
-- [Getting Started](#getting-started-🚀)
-- [Usage](#usage-📋)
-- [Tech Stack](#tech-stack-💻)
-- [Deployment](#deployment-🌎)
-- [Demo](#demo-🎬)
-- [Contribute](#contribute-🤝)
-- [License](#license-🧾)
-- [Credits](#credits-✋)
-- [Contact](#contact-🌐)
+- [Overview](#overview)
+- [Motivation](#cats-and-humor)
+- [Supporting Researches](#researches)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Tech Stack](#tech-stack)
+- [Deployment](#deployment)
+- [Demo](#demo)
+- [Contribute](#contribute)
+- [License](#license)
+- [Credits](#license)
+- [Contact](#contact)
 
 ## Overview 📖
 
