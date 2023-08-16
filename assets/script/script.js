@@ -78,7 +78,6 @@ function saveTextToLocalStorage(enteredText) {
 }
 
 // Function to handle text submission
-// Function to handle text submission
 function handleSubmission() {
   if (!selectedDate) {
     alert("Please select a date first.");
