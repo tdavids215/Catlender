@@ -76,12 +76,18 @@ function saveTextToLocalStorage(enteredText) {
 }
 
 // Function to handle text submission
+// Function to handle text submission
 function handleSubmission() {
   if (!selectedDate) {
     alert("Please select a date first.");
     return;
   }
-  var enteredText = textEntry.value;
+  var enteredText = textEntry.value.trim(); // trim removes whitespace from both ends of a string
+  if (!enteredText) { // checks if the trimmed text is empty
+    alert("Please enter some text before submitting.");
+    return;
+  }
+  
   saveTextToLocalStorage(enteredText);
   displaySavedTexts(); // Re-display saved texts
   textEntry.value = "";
