@@ -54,8 +54,10 @@ function displaySavedTexts() {
       var deleteButton = createButton("Delete", savedText);
       savedDiv.appendChild(deleteButton);
 
+      /*
       var completionFieldset = createCompletionCheckbox(savedText);
       savedDiv.appendChild(completionFieldset);
+      */
 
       // Append the saved text element to the text location
       textLocation.appendChild(savedDiv);
@@ -141,6 +143,7 @@ function handleEdit(taskId) {
   }
 }
 
+/*
 // Function to create checkbox for marking completion
 function createCompletionCheckbox(savedText) {
   var fieldset = document.createElement("fieldset");
@@ -179,7 +182,7 @@ function handleCompletionToggle(taskId, isCompleted) {
     editButton.style.opacity = isCompleted ? 0.5 : 1; // Optional: reduce opacity to visually indicate it's disabled
   }
 }
-
+*/
 
 // Event listener for date selection change
 dateInput.addEventListener("change", handleDateSelection);
